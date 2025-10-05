@@ -7,8 +7,6 @@ import mongoose from "mongoose";
 export const POST = async (request) => {
   const { hotelId, userId, checkin, checkout } = await request.json();
 
-  console.log("before", hotelId, userId, checkin, checkout);
-
   await dbConnect();
 
   const payload = {
@@ -17,8 +15,6 @@ export const POST = async (request) => {
     checkin,
     checkout,
   };
-
-  console.log("after", payload);
 
   try {
     await bookingModel.create(payload);
