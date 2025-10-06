@@ -2,31 +2,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/auth";
 import Logout from "./auth/Logout";
+import brand from "../public/brand.png";
 
 const Navbar = async ({ sideMenu }) => {
   const session = await auth();
   return (
     <nav>
       <Link href="/">
-        <Image
-          src="/stayswift.svg"
-          alt="Stay Swift Logo"
-          width={200}
-          height={200}
-        />
+        <Image src={brand} alt="TripNest Logo" className="w-[200px] h-[70px]" />
       </Link>
       {sideMenu && (
         <ul>
           <li>
-            <Link href="#">Recommended Places</Link>
-          </li>
-
-          <li>
-            <Link href="#">About Us</Link>
-          </li>
-
-          <li>
-            <Link href="#">Contact us</Link>
+            <Link href="/hotels">Hotels</Link>
           </li>
 
           <li>
