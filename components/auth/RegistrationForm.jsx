@@ -33,7 +33,6 @@ const RegistrationForm = () => {
       });
 
       const data = await res.json();
-      console.log("reg client", data);
 
       if (!res.ok) {
         // Handle error responses

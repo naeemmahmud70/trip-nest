@@ -41,6 +41,8 @@ export async function POST(request) {
       metadata: {
         hotelId,
         userId,
+        hotelName,
+        amount,
         checkin,
         checkout,
       },

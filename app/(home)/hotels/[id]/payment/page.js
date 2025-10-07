@@ -31,12 +31,7 @@ const PaymentPage = async ({
     <section className="container">
       <div className="p-6 rounded-lg max-w-xl mx-auto my-12 mt-[100px]">
         <h2 className="font-bold text-2xl">Payment Details</h2>
-        <p className="text-gray-600 text-sm">
-          You have picked <b>{hotelInfo?.name}</b> and total price is{" "}
-          <b>${cost}</b>{" "}
-          {hasCheckInCheckOut && `for ${getDayDifference(checkin, checkout)}`}{" "}
-          day(s).
-        </p>
+
         <PaymentForm
           loggedInUser={loggedInUser}
           hotelInfo={JSON.parse(JSON.stringify(hotelInfo))}

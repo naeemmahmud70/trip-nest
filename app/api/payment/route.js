@@ -9,6 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
     const { sessionId } = await request.json();
+    console.log("sessionIdsssssss", sessionId);
 
     if (!sessionId) {
       return NextResponse.json(
@@ -28,18 +29,18 @@ export async function POST(request) {
     }
 
     // Extract metadata
-    const { hotelId, userId, checkin, checkout } = session.metadata;
-
+    const { hotelId, userId, hotelName, amount, checkin, checkout } =
+      session?.metadata;
     await dbConnect();
 
     // Check if booking already exists (prevent duplicates)
-    const existingBooking = await bookingModel.findOne({ 
-      stripeSessionId: sessionId 
+    const existingBooking = await bookingModel.findOne({
+      stripeSessionId: sessionId,
     });
 
     if (existingBooking) {
       return NextResponse.json(
-        { message: "Booking already created", booking: existingBooking },
+        { message: "Booking already created!", booking: existingBooking },
         { status: 200 }
       );
     }
@@ -47,23 +48,24 @@ export async function POST(request) {
     // Create the booking
     const newBooking = await bookingModel.create({
       hotelId,
+      hotelName,
       userId,
       checkin,
       checkout,
+      amount,
       stripeSessionId: sessionId,
       paymentStatus: "paid",
-      amount: session.amount_total / 100, // Convert from cents
       createdAt: new Date(),
     });
 
     return NextResponse.json(
-      { 
-        message: "Booking created successfully",
-        booking: newBooking 
+      {
+        status: 201,
+        message: "Booking created successfully!",
+        booking: newBooking,
       },
       { status: 201 }
     );
-
   } catch (error) {
     console.error("Payment processing error:", error);
     return NextResponse.json(
