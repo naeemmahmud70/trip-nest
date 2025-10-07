@@ -9,8 +9,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
     const { sessionId } = await request.json();
-    console.log("sessionIdsssssss", sessionId);
-
     if (!sessionId) {
       return NextResponse.json(
         { error: "Session ID is required" },

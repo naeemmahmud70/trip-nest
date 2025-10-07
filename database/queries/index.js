@@ -17,9 +17,9 @@ export async function getAllHotels(
   checkout,
   sort,
   category,
-  priceRange
+  priceRange,
+  amenities
 ) {
-  console.log("priceRange", priceRange);
   const regex = new RegExp(destination, "i");
   const hotelsByDestination = await hotelModel
     .find({ city: { $regex: regex } })
@@ -30,6 +30,7 @@ export async function getAllHotels(
       "lowRate",
       "city",
       "propertyCategory",
+      "amenities",
     ])
     .lean();
 
@@ -58,6 +59,18 @@ export async function getAllHotels(
         const [min, max] = range.split("-").map(Number);
         return hotelPrice >= min && hotelPrice <= max;
       });
+    });
+  }
+
+  // Apply amenities filter
+  if (amenities) {
+    const amenityIds = amenities.split("|");
+    allHotels = allHotels.filter((hotel) => {
+      return amenityIds.some((amenityId) =>
+        hotel.amenities?.some(
+          (hotelAmenity) => hotelAmenity.toString() === amenityId
+        )
+      );
     });
   }
 

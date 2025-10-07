@@ -50,9 +50,9 @@ export default function PaymentSuccess() {
       });
 
       const response = await res.json();
-
-      console.log("booking", response);
-      setIsProcessing(false);
+      if (response) {
+        setIsProcessing(false);
+      }
     } catch (err) {
       console.error("Bookings failed:", err);
       setIsProcessing(false);

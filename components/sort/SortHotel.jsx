@@ -8,10 +8,9 @@ const SortHotel = () => {
   const searchParams = useSearchParams();
   const currentSort = searchParams.get("sort");
 
-  const handleSortChange = (sortValue) => {
+  const handleSortClick = (sortValue) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    // If the same value is clicked again, remove it (uncheck)
     if (currentSort === sortValue) {
       params.delete("sort");
     } else {
@@ -32,7 +31,8 @@ const SortHotel = () => {
             id="highToLow"
             value="highToLow"
             checked={currentSort === "highToLow"}
-            onChange={() => handleSortChange("highToLow")}
+            onClick={() => handleSortClick("highToLow")}
+            onChange={() => {}}
             className="mr-2 cursor-pointer"
           />
           Price High to Low
@@ -45,7 +45,8 @@ const SortHotel = () => {
             id="lowToHigh"
             value="lowToHigh"
             checked={currentSort === "lowToHigh"}
-            onChange={() => handleSortChange("lowToHigh")}
+            onClick={() => handleSortClick("lowToHigh")}
+            onChange={() => {}}
             className="mr-2 cursor-pointer"
           />
           Price Low to High

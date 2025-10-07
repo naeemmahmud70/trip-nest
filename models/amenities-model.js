@@ -1,20 +1,22 @@
 import mongoose, { Schema } from "mongoose";
-import { ObjectId } from "mongodb";
-
-const reviewSchema = new Schema({
-  hotelId: {
+const amenitiesSchema = new Schema({
+  name: {
     required: true,
-    type: ObjectId,
+    type: String,
   },
-  userId: {
-    required: true,
-    type: ObjectId,
-  },
-  review: {
+  price: {
     required: true,
     type: Number,
+  },
+  instructions: {
+    required: true,
+    type: String,
+  },
+  hours: {
+    required: true,
+    type: String,
   },
 });
 
 export const amenitiesModel =
-  mongoose.models.amenities ?? mongoose.model("amenities", amenitiesModel);
+  mongoose.models.amenities ?? mongoose.model("amenities", amenitiesSchema);
