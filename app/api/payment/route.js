@@ -1,8 +1,9 @@
-// app/api/auth/payment/route.js
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { dbConnect } from "@/service/mongo";
-import { bookingModel } from "@/models/booking-model"; // Adjust import path
+import { bookingModel } from "@/models/booking-model";
+import { getUserById } from "@/database/queries";
+import { sendBookingConfirmation } from "@/lib/bookingConfirmation";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -30,8 +31,8 @@ export async function POST(request) {
     const { hotelId, userId, hotelName, amount, checkin, checkout } =
       session?.metadata;
     await dbConnect();
+    const userdetails = await getUserById(userId);
 
-    // Check if booking already exists (prevent duplicates)
     const existingBooking = await bookingModel.findOne({
       stripeSessionId: sessionId,
     });
@@ -55,6 +56,21 @@ export async function POST(request) {
       paymentStatus: "paid",
       createdAt: new Date(),
     });
+    if (newBooking) {
+      const name = userdetails[0]?.name;
+      const email = userdetails[0]?.email;
+
+      await sendBookingConfirmation(
+        hotelId,
+        hotelName,
+        userId,
+        checkin,
+        checkout,
+        amount,
+        name,
+        email
+      );
+    }
 
     return NextResponse.json(
       {
