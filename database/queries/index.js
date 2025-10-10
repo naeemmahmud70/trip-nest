@@ -11,7 +11,15 @@ import {
 
 import { isDateInbetween } from "@/utils/data-util";
 
-export async function getAllHotels(destination, checkin, checkout, category) {
+export async function getAllHotels(
+  destination,
+  checkin,
+  checkout,
+  sort,
+  category,
+  priceRange,
+  amenities
+) {
   const regex = new RegExp(destination, "i");
   const hotelsByDestination = await hotelModel
     .find({ city: { $regex: regex } })
@@ -22,6 +30,7 @@ export async function getAllHotels(destination, checkin, checkout, category) {
       "lowRate",
       "city",
       "propertyCategory",
+      "amenities",
     ])
     .lean();
 
@@ -32,6 +41,36 @@ export async function getAllHotels(destination, checkin, checkout, category) {
 
     allHotels = allHotels.filter((hotel) => {
       return categoriesToMatch.includes(hotel.propertyCategory.toString());
+    });
+  }
+
+  // Apply price range filter
+  if (priceRange) {
+    const ranges = priceRange.split("|");
+
+    allHotels = allHotels.filter((hotel) => {
+      const hotelPrice = hotel.lowRate; // or use average: (hotel.lowRate + hotel.highRate) / 2
+
+      return ranges.some((range) => {
+        if (range === "182+") {
+          return hotelPrice >= 182;
+        }
+
+        const [min, max] = range.split("-").map(Number);
+        return hotelPrice >= min && hotelPrice <= max;
+      });
+    });
+  }
+
+  // Apply amenities filter
+  if (amenities) {
+    const amenityIds = amenities.split("|");
+    allHotels = allHotels.filter((hotel) => {
+      return amenityIds.some((amenityId) =>
+        hotel.amenities?.some(
+          (hotelAmenity) => hotelAmenity.toString() === amenityId
+        )
+      );
     });
   }
 
@@ -47,6 +86,18 @@ export async function getAllHotels(destination, checkin, checkout, category) {
         return hotel;
       })
     );
+  }
+
+  // Apply sorting
+  if (sort) {
+    allHotels = allHotels.sort((a, b) => {
+      if (sort === "highToLow") {
+        return b.highRate - a.highRate;
+      } else if (sort === "lowToHigh") {
+        return a.lowRate - b.lowRate;
+      }
+      return 0;
+    });
   }
 
   return replaceMongoIdInArray(allHotels);
@@ -99,4 +150,8 @@ export async function getUserByEmail(email) {
 export async function getBookingsByUser(userId) {
   const bookings = await bookingModel.find({ userId: userId }).lean();
   return replaceMongoIdInArray(bookings);
+}
+export async function getUserById(userId) {
+  const bookings = await userModel.find({ _id: userId }).lean();
+  return bookings;
 }
