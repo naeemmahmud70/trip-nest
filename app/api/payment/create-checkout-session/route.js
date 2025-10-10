@@ -7,15 +7,6 @@ export async function POST(request) {
   try {
     const { hotelId, userId, hotelName, amount, checkin, checkout } =
       await request.json();
-    console.log(
-      "hotelId, userId, hotelName, amount, checkin, checkout",
-      hotelId,
-      userId,
-      hotelName,
-      amount,
-      checkin,
-      checkout
-    );
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({

@@ -95,8 +95,8 @@ export default function PaymentSuccess() {
           </h1>
 
           <p className="text-gray-600 mb-6">
-            Your booking has been confirmed. You'll receive a confirmation email
-            shortly.
+            Your booking has been confirmed. You&apos;ll receive a confirmation
+            email shortly.
           </p>
 
           <div className="space-y-3">

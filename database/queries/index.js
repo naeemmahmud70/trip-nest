@@ -151,3 +151,7 @@ export async function getBookingsByUser(userId) {
   const bookings = await bookingModel.find({ userId: userId }).lean();
   return replaceMongoIdInArray(bookings);
 }
+export async function getUserById(userId) {
+  const bookings = await userModel.find({ _id: userId }).lean();
+  return bookings;
+}
