@@ -152,7 +152,7 @@ const PaymentForm = ({ loggedInUser, hotelInfo, checkin, checkout }) => {
 
         <div className="my-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
           <p className="text-sm text-blue-800">
-            <strong>Test Mode:</strong> You'll be redirected to Stripe's secure
+            <strong>Test Mode:</strong> You&apos;ll be redirected to Stripe&apos;s secure
             checkout page.
             <br />
             Use test card:{" "}
