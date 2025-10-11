@@ -12,7 +12,7 @@ The system also enables users to share feedback through reviews and ratings, pro
 **Last Release Date:** `10/10/2025`  
 **Latest Stable Branch:** `main`  
 **Active Development Branch:** `development`
-**Link:** `https://trip-nest-blond.vercel.app`
+**Hosted Link:** `https://trip-nest-blond.vercel.app`
 
 
 
@@ -22,8 +22,8 @@ The system also enables users to share feedback through reviews and ratings, pro
 Run the following commands in your terminal:
 
 ```bash
- git clone https://github.com/BrainAlive/BAAI-Brainalive-ai
- cd BAAI-Brainalive-ai
+ git clone https://github.com/naeemmahmud70/trip-nest
+ cd trip-nest
 ```
 
 **2. Install Dependencies**  
